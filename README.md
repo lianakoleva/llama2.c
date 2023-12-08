@@ -1,20 +1,25 @@
-## llama2.c
+## llama2.c NEON vectorization
 
-<p align="center">
+<p>
   <img src="assets/llama_cute.jpg" width="300" height="300" alt="Cute Llama">
 </p>
 
-Have you ever wanted to inference a baby [Llama 2](https://ai.meta.com/llama/) model in pure C? No? Well, now you can!
+| ./experiment   | stories15M.bin (tok/s) | stories42M.bin (tok/s) | size (bytes) |
+|----------------|------------------------|------------------------|------|
+| ./runO3        | 110.7478               | 32.8958                | 53410 |
+| ./runneonO3    | 359.4369               | 114.4591               | 53414 |
+| ./runOfast     | 643.6312               | 260.0576               | 53413 |
+| ./runneonOfast | 376.2007               | 115.8712               | 53417 |
+| ./runOs        | 67.9145                | 21.8636                | 36866 |
+| ./runneonOs    | 343.5151               | 110.1927               | 36870 |
 
-Train the Llama 2 LLM architecture in PyTorch then inference it with one simple 700-line C file ([run.c](run.c)). You might think that you need many billion parameter LLMs to do anything useful, but in fact very small LLMs can have surprisingly strong performance if you make the domain narrow enough (ref: [TinyStories](https://huggingface.co/datasets/roneneldan/TinyStories) paper). This repo is a "fullstack" train + inference solution for Llama 2 LLM, with focus on minimalism and simplicity.
+3.25x/5.06x better performance (in tok/s) while changing executable size by -6.04%/+1.38% for -O3 and -Os, respectively.
 
-As the architecture is identical, you can also load and inference Meta's Llama 2 models. However, the current code only inferences models in fp32, so you will most likely not be able to productively load models larger than 7B. Work on model quantization is currently ongoing.
-
-Please note that this repo started recently as a fun weekend project: I took my earlier [nanoGPT](https://github.com/karpathy/nanoGPT), tuned it to implement the Llama-2 architecture instead of GPT-2, and the meat of it was writing the C inference engine in [run.c](run.c). So the project is young and moving quickly. Hat tip to the awesome [llama.cpp](https://github.com/ggerganov/llama.cpp) for inspiring this project. Compared to llama.cpp, I wanted something super simple, minimal, and educational so I chose to hard-code the Llama 2 architecture and just roll one inference file of pure C with no dependencies.
+*Note:*
+- *tok/s performance determined by* `./perf.sh perf-$(experiment) $(model) $(n)` *with* `n = 100`
+- *executable size in bytes determined by* `ls -l` *unix command*
 
 ## feel the magic
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karpathy/llama2.c/blob/master/run.ipynb)
 
 First, navigate to the folder where you keep your projects and clone this repository to this folder:
 

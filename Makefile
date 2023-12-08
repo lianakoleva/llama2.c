@@ -1,6 +1,44 @@
 # choose your compiler, e.g. gcc/clang
 # example override to clang: make run CC=clang
 CC = gcc
+MODEL ?= stories15M.bin
+CFG ?= run
+
+perf-runO3: 
+	make run
+	./run $(MODEL)
+
+perf-runOfast: 
+	make runfast
+	./runfast $(MODEL)
+
+perf-runOs: 
+	make runOs
+	./runOs $(MODEL)
+
+perf-runneonO3: 
+	make runneonO3
+	./runneonO3 $(MODEL)
+
+perf-runneonOfast: 
+	make runneonOfast
+	./runneonOfast $(MODEL)
+
+perf-runneonOs: 
+	make runneonOs
+	./runneonOs $(MODEL)
+
+runneonO3: runneon.c
+	$(CC) -O3 -o runneonO3 runneon.c -lm
+
+runneonOfast: runneon.c
+	$(CC) -Ofast -o runneonOfast runneon.c -lm
+
+runneonOs: runneon.c
+	$(CC) -Os -o runneonOs runneon.c -lm
+
+runOs: run.c
+	$(CC) -Os -o runOs run.c -lm
 
 # the most basic way of building that is most likely to work on most systems
 .PHONY: run
@@ -25,8 +63,8 @@ rundebug: run.c
 # In our specific application this is *probably* okay to use
 .PHONY: runfast
 runfast: run.c
-	$(CC) -Ofast -o run run.c -lm
-	$(CC) -Ofast -o runq runq.c -lm
+	$(CC) -Ofast -o runfast run.c -lm
+	$(CC) -Ofast -o runfastq runq.c -lm
 
 # additionally compiles with OpenMP, allowing multithreaded runs
 # make sure to also enable multiple threads when running, e.g.:
