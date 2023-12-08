@@ -5,15 +5,15 @@
 </p>
 
 | ./experiment   | stories15M.bin (tok/s) | stories42M.bin (tok/s) | size (bytes) |
-|----------------|------------------------|------------------------|------|
-| ./runO3        | 110.7478               | 32.8958                | 53410 |
-| ./runneonO3    | 359.4369               | 114.4591               | 53414 |
-| ./runOfast     | 643.6312               | 260.0576               | 53413 |
-| ./runneonOfast | 376.2007               | 115.8712               | 53417 |
-| ./runOs        | 67.9145                | 21.8636                | 36866 |
-| ./runneonOs    | 343.5151               | 110.1927               | 36870 |
+|----------------|------------------------|------------------------|--------------|
+| ./runO3        | 110.7478               | 32.8958                | 53410        |
+| ./runneonO3    | 359.4369               | 114.4591               | 53414        |
+| ./runOfast     | 643.6312               | 260.0576               | 53413        |
+| ./runneonOfast | 376.2007               | 115.8712               | 53417        |
+| ./runOs        | 67.9145                | 21.8636                | 36866        |
+| ./runneonOs    | 343.5151               | 110.1927               | 36870        |
 
-3.25x/5.06x better performance (in tok/s) while changing executable size by -6.04%/+1.38% for -O3 and -Os, respectively.
+3.25x/3.48x and 5.06x/5.04x better performance (in tok/s) while changing executable size by -6.04% and +1.38% for -O3 stories15M/42M and -Os stories15M/42M, respectively.
 
 *Note:*
 - *tok/s performance determined by* `./perf.sh perf-$(experiment) $(model) $(n)` *with* `n = 100`
